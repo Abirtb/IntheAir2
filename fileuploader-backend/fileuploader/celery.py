@@ -7,7 +7,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fileuploader.settings')
 
 
 
-app = Celery('fileuploader', broker='redis://localhost:6379/0')
+app = Celery('fileuploader', broker='redis://redis:6379/0')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

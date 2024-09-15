@@ -29,8 +29,8 @@ ALLOWED_HOSTS = []
 # settings.py
 
 # Celery Settings
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Using Redis as broker at default port
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Using Redis to store task results
+CELERY_BROKER_URL = 'redis://redis:6379/0'  # Using Redis as broker at default port
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'  # Using Redis to store task results
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

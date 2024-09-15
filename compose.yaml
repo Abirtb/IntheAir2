@@ -1,0 +1,53 @@
+
+services:
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - link-network
+
+  backend:
+    build:
+      context: ./fileuploader-backend
+    image: fileuploader-backend  # Naming the image after build
+    volumes:
+      - fileuploader-backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    networks:
+      - link-network
+
+  celery:
+    image: fileuploader-backend  # Refer to the same image as backend if requirements are the same
+    command: celery -A fileuploader.celery worker -l info
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - backend
+    networks:
+      - link-network
+
+  frontend:
+    build:
+      context: ./fileuploader-frontend
+    image: fileuploader-frontend  # Naming the image after build
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - link-network
+
+networks:
+  link-network:
+    driver: bridge
+
+volumes:
+  fileuploader-backend:
+    driver: local
